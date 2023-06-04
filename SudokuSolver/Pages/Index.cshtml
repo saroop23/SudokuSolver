@@ -1,0 +1,60 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Sudoku Solver";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div>
+    <form method="post">
+        <table>
+            @for (int row = 0; row < 9; row++)
+            {
+                <tr>
+                    @for (int col = 0; col < 9; col++)
+                    {
+                        int cellValue = Model.SudokuGrid[row, col];
+                        <td>
+                            <input type="number" min="0" max="9" name="SudokuGrid[@row,@col]" value="@cellValue" />
+                        </td>
+                    }
+                </tr>
+            }
+        </table>
+
+        <div>
+            <button type="submit">Solve</button>
+        </div>
+    </form>
+</div>
+
+@if (Model.ModelState.IsValid)
+{
+    <div>
+        <h3>Solution:</h3>
+        <table>
+            @for (int row = 0; row < 9; row++)
+            {
+                <tr>
+                    @for (int col = 0; col < 9; col++)
+                    {
+                        int cellValue = Model.SudokuGrid[row, col];
+                        <td>@cellValue</td>
+                    }
+                </tr>
+            }
+        </table>
+    </div>
+}
+else
+{
+    <div>
+        <h3>Error:</h3>
+        @foreach (var error in Model.ModelState.Values.SelectMany(v => v.Errors))
+        {
+            <p>@error.ErrorMessage</p>
+        }
+    </div>
+}
+ 
